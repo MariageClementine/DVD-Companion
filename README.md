@@ -1,7 +1,7 @@
 ## Comming Soon
 # DVD-Companion, a companion for the game "Dave the Diver"
 
-In Dave The Diver, you can only track the fishes you caught when you are out of the water with the "Marinca" app. This can be a problem when you are diving and wondering "Did I already catch that fish?" or "which star do I have to get for this one?".
+In Dave The Diver, you can only track the fishes you caught when you are out of the water with the "Marinca" app. This can be a problem when you are diving and wondering "Did I already catch that fish?" or "do I already have 3 stars for this one?".
 
 DVD-Compagnion plans to remedy that problem: you will be able to track and save your progress.
 
@@ -9,9 +9,12 @@ DVD-Compagnion plans to remedy that problem: you will be able to track and save 
 - the fishes you discovered
 - the stars you got for each fish
 - what fishes are yet to be caught
-The display will be categorized by depth, just like the Marinca app in-game. A filter will be added pour help you find quicker what you need.
+- the number of fish Roes (0,1 or 2) you have yet to get for breeding
 
-### Planned tools for conception (subject to changes)
+  
+The display will be categorized by zone, just like the Marinca app in-game. A filter will be added to help you find what you need more quickly.
+
+### Planned tools for conception (subject to change)
 - On the web
   - A MySQL database
   - Spring for the back-end
