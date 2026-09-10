@@ -22,7 +22,7 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
     - Spring Data JPA
     - Use of Beans
     -    
-  - JS/React for the front-end
+  - JS/React (/angular?) for the front-end
 - On Android
   - An SQLite database   
 
