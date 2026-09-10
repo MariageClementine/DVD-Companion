@@ -16,8 +16,12 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
 
 ### Planned tools for conception (subject to change)
 - On the web
-  - A MySQL database
-  - Spring for the back-end
+  - A database
+  - Spring for the back-end:
+    - Spring Boot
+    - Spring Data JPA
+    - Use of Beans
+    -    
   - JS/React for the front-end
 - On Android
   - An SQLite database   
