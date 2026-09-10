@@ -1,7 +1,7 @@
 ## Comming Soon
 # DVD-Companion, a companion for the game "Dave the Diver"
 
->  _I'm in the process of learning Spring autonomously. This project is an idea I got while playing Dave the Diver recently, and it fits perfectly with what I want to practice. The development will, maybe, be a bit slow as I am still learning at the same time, but I am do hyped up about it that it may take precedence over the Boggle project._ 
+>  _I'm in the process of learning Spring autonomously. This project is an idea I got while playing Dave the Diver recently, and it fits perfectly with what I want to practice. The development will, maybe, be a bit slow as I am still learning at the same time, but I am so hyped up about it that it may take precedence over the Boggle project._ 
 
 In Dave The Diver, you can only track the fishes you caught when you are out of the water with the "Marinca" app. This can be a problem when you are diving and wondering "Did I already catch that fish?" or "do I already have 3 stars for this one?".
 
@@ -18,7 +18,7 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
 
 ### Planned tools for conception (subject to change)
 - On the web
-  - A MySQL(/PostgreSQL?) database
+  - A MySQL(/PostgreSQL/ H2?) database
   - Spring for the back-end:
     - Spring Boot
     - Spring Data JPA
