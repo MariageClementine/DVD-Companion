@@ -26,8 +26,6 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
     - Use of Beans
     - Hibernate as ORM
   - JS/React (/angular?) for the front-end
-- On Android
+- On Android (to be determined)
   - An SQLite database   
-
-This will also help me practicing what I have been learning recently.
 
