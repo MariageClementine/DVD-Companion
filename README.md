@@ -12,7 +12,7 @@ DVD-Companion plans to remedy that problem: you will be able to track and save y
 - the stars you got for each fish
 - what fishes are yet to be caught
 - the number of fish Roes (0,1 or 2) you have yet to get for breeding
-- An Ecowater tracker (? not sure yet)
+- A tracker for the Boss Fishes and the Photo Fishes ? (not sure yet)
 
   
 The display will be categorized by zone, just like the Marinca app in-game. A filter will be added to help you find what you need more quickly.
