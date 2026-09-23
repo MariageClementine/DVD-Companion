@@ -19,7 +19,7 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
 
 ### Planned tools for conception (subject to change)
 - On the web
-  - A MySQL(/PostgreSQL/ H2?) database
+  - A MySQL database
   - Spring for the back-end:
     - Spring Boot
     - Spring Data JPA
