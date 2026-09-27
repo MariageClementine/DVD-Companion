@@ -1,4 +1,3 @@
-## Comming Soon
 # DVD-Companion, a companion for the game "Dave the Diver"
 
 >  _I'm in the process of learning Spring autonomously. This project is an idea I got while playing Dave the Diver recently, and it fits perfectly with what I want to practice. The development will, maybe, be a bit slow as I am still learning at the same time._ 
