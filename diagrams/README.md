@@ -1,3 +1,3 @@
-# The database model:
+# The database ERD:
 
-![Finished Version](diagrams/erd-v2.png)
+![Finished Version](erd_v2.png)
