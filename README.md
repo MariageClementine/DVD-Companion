@@ -22,9 +22,10 @@ The display will be categorized by zone, just like the Marinca app in-game. A fi
   - Spring for the back-end:
     - Spring Boot
     - Spring Data JPA
-    - Use of Beans
     - Hibernate as ORM
   - JS/React (/angular?) for the front-end
+  - Docker for a container
+  - Railway for deployment
 - On Android (to be determined)
   - An SQLite database   
 
