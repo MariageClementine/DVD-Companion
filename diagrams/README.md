@@ -1,3 +1,3 @@
 # The database ERD:
 
-![Finished Version](erd_v2.png)
+![Finished Version](erd_v3.png)
