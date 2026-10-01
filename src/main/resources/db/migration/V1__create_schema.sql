@@ -1,0 +1,12 @@
+USE dvd_co;
+
+CREATE TABLE IF NOT EXISTS dlc (
+	dlc_id INT PRIMARY KEY,
+	dlc_name VARCHAR(45) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user(
+	user_id INT PRIMARY KEY,
+	user_login VARCHAR(20) UNIQUE NOT NULL,
+	user_password VARCHAR(72) NOT NULL
+);
