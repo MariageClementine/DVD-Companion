@@ -1,13 +1,13 @@
-#
+#Values displayed to the user, will not be modified by him
 
-INSERT INTO dlc VALUES
+INSERT IGNORE INTO dlc VALUES
 (1,'Dredge'),
 (2,'Godzilla'),
 (3,'Ichiban''s Holiday'),
 (4,'In the Jungle'),
 (5,'GGST');
 
-INSERT INTO zone VALUES
+INSERT IGNORE INTO zone VALUES
 (1,'Shallows','0-50m',null),
 (2,'Special Seaweed Map','0-50m',null),
 (3,'Medium Depths','50-130m',null),
@@ -23,7 +23,7 @@ INSERT INTO zone VALUES
 (13,'Fog Coast',null,1),
 (14,'Jellyfish Basin',null,1);
 
-INSERT INTO fish VALUES
+INSERT IGNORE INTO fish VALUES
 (1,'American Lobster',8,'DAY',FALSE,1,null),
 (2,'Barrel Jellyfish',2,'DAY',FALSE,1,null),
 (3,'Big-Belly Seahorse',2,'DAY',TRUE,1,null),
@@ -182,7 +182,7 @@ INSERT INTO fish VALUES
 (156,'Waptia Fieldensis',9,'DAY',TRUE,11,null),
 (157,'Xenacanthus',9,'DAY',FALSE,11,null);
 
-INSERT INTO no_star_fish VALUES
+INSERT IGNORE INTO no_star_fish VALUES
 (1,'Bony Wreckfish',7,12),
 (2,'Cortex Decorator',7,12),
 (3,'Enthralled Stonefish',6,12),
