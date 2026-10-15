@@ -8,20 +8,20 @@ INSERT IGNORE INTO dlc VALUES
 (5,'GGST');
 
 INSERT IGNORE INTO zone VALUES
-(1,'Shallows','0-50m',null),
-(2,'Special Seaweed Map','0-50m',null),
-(3,'Medium Depths','50-130m',null),
-(4,'Limestone Cave','50-130m',null),
-(5,'Depths','130-250m',null),
-(6,'Glacier Passage','250-420m',null),
-(7,'Glacier Zone','420-540m',null),
-(8,'First Glacial Cave','420-540m',null),
-(9,'Second Glacial Cave','420-540m',null),
-(10,'Third Glacial Cave','420-540m',null),
-(11,'Hydrothermal Vents','540m +',null),
-(12,'Black Cliff',null,1),
-(13,'Fog Coast',null,1),
-(14,'Jellyfish Basin',null,1);
+(1,'Shallows',0,50,null),
+(2,'Special Seaweed Map',0,50,null),
+(3,'Medium Depths',50,130,null),
+(4,'Limestone Cave',50,130,null),
+(5,'Depths',130,250,null),
+(6,'Glacier Passage',250,420,null),
+(7,'Glacier Zone',420,540,null),
+(8,'First Glacial Cave',420,540,null),
+(9,'Second Glacial Cave',420,540,null),
+(10,'Third Glacial Cave',420,540,null),
+(11,'Hydrothermal Vents',540,null,null),
+(12,'Black Cliff',null,null,1),
+(13,'Fog Coast',null,null,1),
+(14,'Jellyfish Basin',null,null,1);
 
 INSERT IGNORE INTO fish VALUES
 (1,'American Lobster',8,'DAY',FALSE,1,null),

@@ -13,9 +13,12 @@ CREATE TABLE IF NOT EXISTS user(
 CREATE TABLE IF NOT EXISTS zone(
 	zone_id INT PRIMARY KEY,
 	zone_name VARCHAR(45) UNIQUE NOT NULL,
-	zone_depth VARCHAR(20),
+	zone_depth_min INT,
+	zone_depth_max INT,
 	dlc_id INT, 
-	FOREIGN KEY (dlc_id) REFERENCES dlc(dlc_id)
+	FOREIGN KEY (dlc_id) REFERENCES dlc(dlc_id),
+	-- Accepts when both depths are null, or accepts when min depth and max is null, or accepts when both exist and min < max
+	CONSTRAINT chk_zone_depths CHECK ((zone_depth_max IS NULL AND zone_depth_min IS NULL) OR (zone_depth_min IS NOT NULL AND( zone_depth_max IS NULL OR zone_depth_max>zone_depth_min)))
 );
 
 CREATE TABLE IF NOT EXISTS fish(
