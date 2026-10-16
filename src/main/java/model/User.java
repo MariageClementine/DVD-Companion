@@ -13,13 +13,13 @@ public class User {
     @Column(name="user_login")
     private String login;
 
-    @Column(name="user_password")
-    private String password;
+    @Column(name="user_password_hash")
+    private String passwordHash;
 
     public User(){}
     public User(String login, String password){
         this.login = login;
-        this.password = password;
+        this.passwordHash = password;
     }
     public Integer getId(){
         return this.id;
@@ -29,8 +29,8 @@ public class User {
         return this.login;
     }
 
-    public String getPassword(){
-        return this.password;
+    public String getPasswordHash(){
+        return this.passwordHash;
     }
 
     public void setId(Integer id){
@@ -41,7 +41,7 @@ public class User {
         this.login = login;
     }
 
-    public void setPassword(String password){
-        this.password = password;
+    public void setPasswordHash(String password){
+        this.passwordHash = password;
     }
 }
