@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS dlc (
 );
 
 CREATE TABLE IF NOT EXISTS user(
-	user_id INT PRIMARY KEY,
+	user_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_login VARCHAR(20) UNIQUE NOT NULL,
 	user_password VARCHAR(72) NOT NULL
 );
@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS fish(
 	zone_id INT NOT NULL,
 	dlc_id INT,
 	FOREIGN KEY (zone_id) REFERENCES zone(zone_id),
-	FOREIGN KEY (dlc_id) REFERENCES dlc(dlc_id)
+	FOREIGN KEY (dlc_id) REFERENCES dlc(dlc_id),
+	CONSTRAINT chk_fish_active_time CHECK (active_time IN('BOTH','DAY','NIGHT'))
 );
 
 CREATE TABLE IF NOT EXISTS no_star_fish(
