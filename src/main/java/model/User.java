@@ -33,10 +33,6 @@ public class User {
         return this.passwordHash;
     }
 
-    public void setId(Integer id){
-        this.id = id;
-    }
-
     public void setLogin(String login) {
         this.login = login;
     }
