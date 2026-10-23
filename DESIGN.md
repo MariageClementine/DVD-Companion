@@ -137,8 +137,6 @@ fields are without prefix (`name`, not `zoneName`).
 - **Constructors follow entity creation:** entities created by the application (`User`, `FishCatch`, `Roe`) take required-field constructors plus a `protected` 
 empty constructor (for Hibernate); entities born only from the database (`Fish`, `Zone`, `Dlc`) need no explicit one.
 
----
-
 ## 4. Business rules to implement in the Service layer
 
 1. Refuse a catch under 3 stars for a fish with `always_three_stars = true`
