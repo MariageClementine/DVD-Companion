@@ -1,4 +1,4 @@
-package model;
+package io.github.mariageclementine.dvdco.model;
 
 public enum ActiveTime {
 

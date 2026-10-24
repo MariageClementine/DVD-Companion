@@ -1,4 +1,4 @@
-package model;
+package io.github.mariageclementine.dvdco.model;
 
 import jakarta.persistence.*;
 
@@ -7,8 +7,8 @@ import jakarta.persistence.*;
 public class Roe {
 
     @Id
-    @Column(name = "roe_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "roe_id")
     private Integer id;
 
     @ManyToOne(optional = false)
@@ -22,7 +22,7 @@ public class Roe {
     @Column(name = "nb_roe")
     private Integer nbRoe;
 
-    public Roe(){}
+    protected Roe(){}
     public Roe(User user, Fish fish, Integer nbRoe){
         this.user = user;
         this.fish = fish;
@@ -43,14 +43,6 @@ public class Roe {
 
     public Integer getNbRoe() {
         return nbRoe;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setFish(Fish fish) {
-        this.fish = fish;
     }
 
     public void setNbRoe(Integer nbRoe) {

@@ -1,4 +1,4 @@
-package model;
+package io.github.mariageclementine.dvdco.model;
 
 import jakarta.persistence.*;
 
@@ -22,11 +22,15 @@ public class FishCatch {
     @Column(name = "best_nb_stars")
     private Integer bestNbStars;
 
-    public FishCatch(){}
+    protected FishCatch(){}
     public FishCatch(User user, Fish fish, Integer bestNbStars){
         this.user = user;
         this.fish = fish;
         this.bestNbStars = bestNbStars;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public User getUser() {
@@ -39,14 +43,6 @@ public class FishCatch {
 
     public Integer getBestNbStars() {
         return bestNbStars;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setFish(Fish fish) {
-        this.fish = fish;
     }
 
     public void setBestNbStars(Integer bestNbStars) {

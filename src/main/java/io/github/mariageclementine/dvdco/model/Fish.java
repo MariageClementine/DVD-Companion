@@ -1,4 +1,4 @@
-package model;
+package io.github.mariageclementine.dvdco.model;
 
 import jakarta.persistence.*;
 
@@ -30,4 +30,32 @@ public class Fish {
     @ManyToOne(optional = true)
     @JoinColumn(name = "dlc_id")
     private Dlc dlc;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public ActiveTime getActiveTime() {
+        return activeTime;
+    }
+
+    public Boolean getAlwaysThreeStars() {
+        return alwaysThreeStars;
+    }
+
+    public Zone getZone() {
+        return zone;
+    }
+
+    public Dlc getDlc() {
+        return dlc;
+    }
 }

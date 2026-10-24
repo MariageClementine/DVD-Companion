@@ -1,4 +1,4 @@
-package model;
+package io.github.mariageclementine.dvdco.model;
 
 import jakarta.persistence.*;
 
@@ -17,10 +17,10 @@ public class User {
     @Column(name = "user_password_hash")
     private String passwordHash;
 
-    public User(){}
-    public User(String login, String password){
+    protected User(){}
+    public User(String login, String passwordHash){
         this.login = login;
-        this.passwordHash = password;
+        this.passwordHash = passwordHash;
     }
     public Integer getId(){
         return this.id;
@@ -38,7 +38,7 @@ public class User {
         this.login = login;
     }
 
-    public void setPasswordHash(String password){
-        this.passwordHash = password;
+    public void setPasswordHash(String passwordHash){
+        this.passwordHash = passwordHash;
     }
 }
