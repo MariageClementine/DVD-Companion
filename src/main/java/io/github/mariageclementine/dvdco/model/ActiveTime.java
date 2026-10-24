@@ -12,7 +12,7 @@ public enum ActiveTime {
         this.strForDisplay = strDisplay;
     }
 
-    String getStrForDisplay(){
+    public String getStrForDisplay(){
         return this.strForDisplay;
     }
 }
