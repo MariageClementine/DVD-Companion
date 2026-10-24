@@ -3,17 +3,18 @@ package model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer id;
 
-    @Column(name="user_login")
+    @Column(name = "user_login")
     private String login;
 
-    @Column(name="user_password_hash")
+    @Column(name = "user_password_hash")
     private String passwordHash;
 
     public User(){}

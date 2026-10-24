@@ -3,21 +3,21 @@ package model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="no_star_fish")
+@Table(name = "no_star_fish")
 public class NoStarFish {
 
     @Id
-    @Column(name="nsf_id")
+    @Column(name = "nsf_id")
     private Integer id;
 
-    @Column(name="nsf_name")
+    @Column(name = "nsf_name")
     private String name;
 
-    @Column(name="nsf_rank")
+    @Column(name = "nsf_rank")
     private Integer rank;
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name="zone_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "zone_id")
     private Zone zone;
 
     public Integer getId(){
