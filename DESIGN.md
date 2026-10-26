@@ -174,6 +174,10 @@ Flyway can migrate at startup; credentials via `spring.datasource.username=${DB_
 
 ## 7. REST API - sketch V1
 
+![Main Page](diagrams/Sketch_MainPage.png)
+![Stars Form](diagrams/Sketch_FormPageStars.png)
+![Roe Form](diagrams/Sketch_FormPageRoe.png)
+
 | Need                                                                      | Possible endpoint                                                         |
 |---------------------------------------------------------------------------|---------------------------------------------------------------------------|
 | Tabs = **depth bands** (navigation; one band can contain several zones)   | tabs defined on the front side; `GET /api/zones` remains for display info |
