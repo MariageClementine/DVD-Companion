@@ -31,9 +31,9 @@ Note: All the **id** in reference tables are hardcorded, because those are fixed
     constraint **`chk_fish_active_time`**: `CHECK (active_time IN ('DAY', 'NIGHT', 'BOTH'))` (a single place to update if the vocabulary grows),  `NOT NULL` :
 a CHECK alone would let NULL through.
 
-- `always_three_stars` TINYINT(1) : matches the game rule (e.g. shrimps are always 3 stars).
+- `always_three_stars` TINYINT(1) : matches the game rule (e.g. shrimps are always 3 stars).
 - `zone_id` INT, FK = zone
-- `dlc_id` INT, FK = dlc : even if data entry reveals that no current DLC fish has stars, the column deliberately stays to accommodate possible future
+- `dlc_id` INT, FK = DLC : even if data entry reveals that no current DLC fish has stars, the column deliberately stays to accommodate possible future
 star-bearing DLC fish. Can be sorted.
 
 ***zone***
@@ -65,7 +65,7 @@ which is 540m +).
 
     - Tab filter: an absent max means **+∞**; plan for a half-open predicate (an OR).
     - Display: derive "540m and more" when max is absent.
-- `dlc_id` INT, FK = dlc, nullable
+- `dlc_id` INT, FK = DLC, nullable
 
 ***dlc***
 
@@ -79,7 +79,7 @@ which is 540m +).
 - `user_login` VARCHAR(20) (no email, deliberately)
 - `user_password_hash` VARCHAR(72) — BCrypt (60 chars + margin for algorithm migration, e.g. Argon2)
 
-***no_star_fish*:** fish without the star mechanic (e.g. Dredge Dlc content). Any future starless fish will belong here, wherever it comes from.
+***no_star_fish*:** fish without the star mechanic (e.g. Dredge DLC content). Any future starless fish will belong here, wherever it comes from.
 
 - `nsf_id` INT, PK
 - `nsf_name` VARCHAR(45)
@@ -227,22 +227,24 @@ with a visible hint (“always 3 stars”) rather than silently disabled. The pl
   they behave like `no_star_fish` (binary: 0 = missing, 3 = done). The filter predicate is therefore uniform (“not yet 3 stars”), with no special case:
 the always-3 fishes behave naturally.
     - **table per zone**: A tab containing $N$ zones displays $N$ tables, one per zone, and the buttons repeat as many times as there are zones, and are linked to them.
-  Each table is a complete unit, the tab is just a container.
+  Each table is a world of its own, the tab is just a container.
     - **Forms**: A field named "Enter a fish", with immediate suggestions (from the table zone whose button has been clicked);
   radio buttons "1/2/3" and "1/2" for the number of stars and roe: only values allowed by CHECK are offered.
     - **Search bar**: Pure front on the active tab's already loaded list.
     - **"Danger Zone"**: At the bottom of each ZONE, away from the constructive buttons: a "Delete" button used to remove a row after a wrong registration, to follow the
   rule "A line = a catch". A confirmation dialogue is also needed here.
 
-### **d) "DREDGE" dlc tab**
+### **d) "DLC" tab**
 
-Zones without depth will be displayed on a dedicated “DREDGE” tab, all together, with **one table per zone**.
+This tab is dedicated to the DLC content. It will display one table per DLC, with an extra column compared to the other tabs: the zone name. As of today, the table
+"Dredge" contains 33 fish and 3 zones.
 
-Per-zone grouping happens on the front side (tiny data; the list already carries its zone, no extra endpoints).
-
-If a second depthless event appears, the tab generalises into “events” (front label, trivial to rename).
-
-On this tab's tables, the stars and roe buttons are replaced by a binary add form; the Danger Zone's Delete also covers their no-star catch rows .
+This tab follows the same logic as the others: it is a container, and each table is a world of its own. However, here, the tables represent a DLC, not a zone.
+- Based on the game's development model, it can be expected that any future DLC might have only a few new fish and, if any, a few new zones. Using only one tab and a table
+per DLC reduces the tabs and tables proliferation, while staying ergonomic and readable for the user.
+- The "Dredge" DLC is a crossover and is already released. The possibility that its content will change in the future is extremely low. Repeating each action possible for
+each zone (3 as of today) will impact the accessibility without providing any real benefit to the adaptability of the code.
+- DLCs are, by nature, optional. Having their own tab is a logical conclusion in the eyes of a player.
 
 ### e) Others
 
