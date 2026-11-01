@@ -15,7 +15,7 @@ DVD-Companion plans to address that problem: you will be able to track and save 
 - How many roe (up to 2) you still need for breeding
 
 
-The display will be categorised by zone, just like the "Marinca" app in-game. Filters will be added to help you find what you need more quickly.
+The display will be categorised by depth band, just like the "Marinca" app in-game. Filters will be added to help you find what you need more quickly.
 
 ### Planned tech stack
 - On the web
