@@ -19,14 +19,14 @@ are aiming to be as close to enterprise standards as possible.
 
 ### a) Reference tables (fixed game data)
 
-Note: All the **id** in reference tables are hardcorded, because those are fixed data.
+Note: All the **id** in reference tables are hardcoded, because those are fixed data.
 
 ***fish***
 
 - `fish_id` INT, PK
 - `fish_name` VARCHAR(45)
 - `fish_rank` INT: A difficulty number provided by the game, no Enum needed. Can be sorted.
-- `active_time` VARCHAR(10) NOT NULL: `@Enumerated(EnumType.STRING)`, values `'DAY'` / `'NIGHT'` / `'BOTH'` (some fish appear both day and night) .  Can be sorted.
+- `active_time` VARCHAR(10) NOT NULL: `@Enumerated(EnumType.STRING)`, values `'DAY'` / `'NIGHT'` / `'BOTH'` (some fish appear both day and night).  Can be sorted.
 
     constraint **`chk_fish_active_time`**: `CHECK (active_time IN ('DAY', 'NIGHT', 'BOTH'))` (a single place to update if the vocabulary grows),  `NOT NULL` :
 a CHECK alone would let NULL through.
@@ -42,8 +42,8 @@ star-bearing DLC fish. Can be sorted.
 - `zone_name` VARCHAR(45)
 - `zone_depth_min` / `zone_depth_max` INT:
 
-    Both columns are nullable to accommodate zones like the DREDGE ones, which have no explicit depth . NULL automatically excludes a zone from depth-based
-tabs (see the sketch and the DREDGE tab).
+    Both columns are nullable to accommodate zones like the DREDGE ones, which have no explicit depth. NULL automatically excludes a zone from depth-based
+tabs (see the sketch and the DLC tab).
 
     The constraint is named **`chk_zone_depths`**  plural, because the rule covers the pair of limits.
 
@@ -105,7 +105,7 @@ A composite key would have required boilerplate code on the Java side, JPA accep
 guaranteed by the constraint. Only the bearer of identity changes, not the rule.
 
 - `best_nb_stars` INT NOT NULL, constraint “1 to 3” (absence of a row = never caught, a catch always gives ≥ 1 star; the presence of the row means “caught”).
-- Semantics: current best value (no history), updated via *setter*; the player may lower it to correct an entry error, the UI is asking for confirmation first.
+- Semantics: current best value (no history), updated via *setter*; the player may lower it to correct an entry error, the UI asks for confirmation first.
 
 ***roe*:**  auto-incremented PK `roe_id` + `UNIQUE (user_id, fish_id)`, symmetric to catch.
 
@@ -113,6 +113,8 @@ guaranteed by the constraint. Only the bearer of identity changes, not the rule.
 - `nb_roe` INT, constraint “1 to 2”
 - Game rule: 2 roes of the same fish = breeding possible at the farm
 - Absence of a row = no roe (no distinction between “never had” / “sold”)
+
+The two progression axes (`catch` and `roe`) are deliberately independent. The application records the progress each player reports, in any order, and does not enforce game logic between the axes. In the game, an egg always implies a caught fish; the tracker deliberately does not mirror that implication into its data, so a roe record without a star record is a legal state, not an inconsistency.
 
 ***no_star_catch*:** auto-incremented PK `nscatch_id` + `UNIQUE (user_id`, `nsf_id`), FK to `user` and `no_star_fish`.
 
@@ -128,7 +130,7 @@ guaranteed by the constraint. Only the bearer of identity changes, not the rule.
 - Catching (`catch`) and breeding (`roe`) are two independent progression axes. In addition, the binary checklist of starless fish (`no_star_catch`) is a parallel
 structure deliberately kept separate: the different mechanic (no stars) would have forced a cascade of nulls and conditional rules into `catch`.
 
-## 3. Java /JPA decisions
+## 3. Java / JPA decisions
 
 - **Each world is spelled in its native language:** Java PK is `id`, SQL column is `zone_id`; the link is made at every change of layer: `@Column(name = "zone_id")`
 on each `id`, `@JoinColumn(name = "dlc_id")` on each relationship (since JPA's defaults assume bare `id` keys, the names are explicitly given). The other JPA Entity
@@ -140,7 +142,7 @@ empty constructor (for Hibernate); entities born only from the database (`Fish`,
 ## 4. Business rules to implement in the Service layer
 
 1. Refuse a catch under 3 stars for a fish with `always_three_stars = true`
-2. Upsert on catch: record the submitted  `best_nb_stars` . Decreases are allowed to correct entry errors, the UI asks for confirmation before applying one.
+2. Upsert on catch: record the submitted `best_nb_stars`. Decreases are allowed to correct entry errors, the UI asks for confirmation before applying one.
 3. The “fish not yet at 3 stars” list is derived (never stored): fish without a catch row or with `best_nb_stars < 3` ( refinement: uncaptured `always_three_stars`
 fish are part of it, and behave there in binary fashion like `no_star_fish` - at this level only).
 
@@ -174,7 +176,7 @@ Flyway can migrate at startup; credentials via `spring.datasource.username=${DB_
 
 ## 7. REST API - sketch V1
 
-![Main Page](diagrams/Sketch_MainPage.png)
+![Main Page Display](diagrams/Sketch_MainPage.png)
 ![Stars Form](diagrams/Sketch_FormPageStars.png)
 ![Roe Form](diagrams/Sketch_FormPageRoe.png)
 
@@ -200,11 +202,13 @@ and the front already holds all the facts (the table displays the progression).
 The clicked tab calls the same parameterized `GET`, by depth band (cf. `zone_depth_min`/`zone_depth_max`; one band can merge several zones).
 *My Account* is a page/route, not a data tab.
 
+The tabs display the name of the most known zone, but their semantic is the depth band.
+
 ### **c) Write UX**
 
 - Two buttons per progression axis, under each table: "Update stars progress"/"Update roe progress". Each button aims at one endpoint. The back-end performs the upsert
 (setter for catch and roe).
-- Starless fishes get their own form to fill.
+- Starless fish get their own form to fill.
 - **registration form**: select the fish, choose the number of stars or roe, submit. Planned refinement: pre-fill the fish when the click comes from a row of the table.
 - **Lowering a value asks first**: if the submitted stars are *lower* than the current ones, the front shows a confirmation dialogue ("are you sure you want to lower the
 star count?"). The backend cannot tell an error correction from a wrong weaker new catch; the dialogue delegates that call to the player.
@@ -219,40 +223,44 @@ with a visible hint (“always 3 stars”) rather than silently disabled. The pl
     - The table is **non-interactive**: no per-row buttons;
     - The form lists **the fish from the table zone whose button has been clicked**: the front reuses the list already loaded for the table (no extra endpoints).
     - Sorting uses **arrows on each column**, front-side, with semantics per type: text A→Z, `Rank`/stars/roe numerically; each click toggles asc/desc.
-  Never-caught fishes sort at the bottom. `Active Time`: alphabetical or logical grouping (DAY/NIGHT/BOTH), to settle.
+  Never-caught fish sort at the bottom. `Active Time`: alphabetical or logical grouping (DAY/NIGHT/BOTH), to settle.
     - **v1 filters**: two radio buttons "Hide 3 stars obtained"/"Hide 2 roe obtained". One button per type of progression, each hiding the achieved lines. Front-end
   filter on the enriched `GET` (0 star = no line in `catch`); the two radio buttons repeat for each table.
 
-    **COMPLETION semantics**: uncaptured `always_three_stars` fishes stay in the list; they are missing for the 100 %. At this level *only*,
+    **COMPLETION semantics**: uncaptured `always_three_stars` fish stay in the list; they are missing for the 100 %. At this level *only*,
   they behave like `no_star_fish` (binary: 0 = missing, 3 = done). The filter predicate is therefore uniform (“not yet 3 stars”), with no special case:
-the always-3 fishes behave naturally.
+the always-3 fish behave naturally.
     - **table per zone**: A tab containing $N$ zones displays $N$ tables, one per zone, and the buttons repeat as many times as there are zones, and are linked to them.
   Each table is a world of its own, the tab is just a container.
     - **Forms**: A field named "Enter a fish", with immediate suggestions (from the table zone whose button has been clicked);
   radio buttons "1/2/3" and "1/2" for the number of stars and roe: only values allowed by CHECK are offered.
     - **Search bar**: Pure front on the active tab's already loaded list.
-    - **"Danger Zone"**: At the bottom of each ZONE, away from the constructive buttons: a "Delete" button used to remove a row after a wrong registration, to follow the
-  rule "A line = a catch". A confirmation dialogue is also needed here.
+    - **"Danger Zone"**: At the bottom of each ZONE, away from the constructive buttons: a "Delete" button used to remove a row after a wrong registration, to follow the rule "A line = a catch". A confirmation dialogue is also needed here.
 
 ### **d) "DLC" tab**
 
-This tab is dedicated to the DLC content. It will display one table per DLC, with an extra column compared to the other tabs: the zone name. As of today, the table
-"Dredge" contains 33 fish and 3 zones.
+This tab is dedicated to the DLC content. It will display one table per DLC, with an extra column compared to the other tabs: the zone name. As of today, the table "Dredge" contains 33 fish and 3 zones.
 
 This tab follows the same logic as the others: it is a container, and each table is a world of its own. However, here, the tables represent a DLC, not a zone.
 - Based on the game's development model, it can be expected that any future DLC might have only a few new fish and, if any, a few new zones. Using only one tab and a table
 per DLC reduces the tabs and tables proliferation, while staying ergonomic and readable for the user.
-- The "Dredge" DLC is a crossover and is already released. The possibility that its content will change in the future is extremely low. Repeating each action possible for
-each zone (3 as of today) will impact the accessibility without providing any real benefit to the adaptability of the code.
+- The "Dredge" DLC is a crossover and is already released. The possibility that its content will change in the future is extremely low. Repeating every action for
+each zone (3 as of today) will hurt accessibility without providing any real benefit to the adaptability of the code.
 - DLCs are, by nature, optional. Having their own tab is a logical conclusion in the eyes of a player.
 
-### e) Others
+### e) Endpoints
+
+- POST endpoints: A single write endpoint per axis. Adding a PUT endpoint would mean the player has to choose between adding and modifying a progression, which means more buttons. The app is meant to be minimalist, and in the middle of a hundred fish, the fewer possible interactions, the better. The thinking belongs to the application, not the player: the server figures out whether a submission creates or updates a record. Besides, any submission identical to an already existing entry is not rewritten, and the API returns "Entry already existing, no change applied".
+- DELETE endpoints: the only way to completely remove a line from the database. Therefore, they live in an area of the app displayed as "Danger Zone" (so the user does not use it lightly) and are used only when a progression has been recorded by mistake.
+
+### f) Others
 
 - Use of **Spring Data JPA Specifications** (`JpaSpecificationExecutor`) rather than derived Repository methods multiplying;
 no SQL views in v1 (frozen, parameterless — unsuited to dynamic filters, logic invisible in the repo).
-- Enum in the API: expose `DAY`/`NIGHT`/`BOTH` in plain letters (consistent with STRING storage)
+- Enum in the API: displays `"Day"`/`"Night"`/`"Both"` in plain letters, via the `getStrForDisplay()` method, for the values `DAY`,`NIGHT` and `BOTH`.
 - `activeTime` filter semantics: filtering on `DAY` must include `DAY` **and** `BOTH` fish (same for `NIGHT`). Otherwise, “always active”
-fish would disappear from the results;
+fish would disappear from the results.
+
 
 ## 8. Estimated build order
 
