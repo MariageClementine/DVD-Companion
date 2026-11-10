@@ -79,6 +79,7 @@ which is 540m +).
 - `user_login` VARCHAR(20) (no email, deliberately)
 - `user_password_hash` VARCHAR(72) — BCrypt (60 chars + margin for algorithm migration, e.g. Argon2)
 
+
 ***no_star_fish*:** fish without the star mechanic (e.g. Dredge DLC content). Any future starless fish will belong here, wherever it comes from.
 
 - `nsf_id` INT, PK
@@ -114,13 +115,17 @@ guaranteed by the constraint. Only the bearer of identity changes, not the rule.
 - Game rule: 2 roes of the same fish = breeding possible at the farm
 - Absence of a row = no roe (no distinction between “never had” / “sold”)
 
-The two progression axes (`catch` and `roe`) are deliberately independent. The application records the progress each player reports, in any order, and does not enforce game logic between the axes. In the game, an egg always implies a caught fish; the tracker deliberately does not mirror that implication into its data, so a roe record without a star record is a legal state, not an inconsistency.
+The two progression axes (`catch` and `roe`) are deliberately independent. The application records the progress each player reports, in any order,
+and does not enforce game logic between the axes. In the game, an egg always implies a caught fish; the tracker deliberately does not mirror that implication
+into its data, so a roe record without a star record is a legal state, not an inconsistency.
 
 ***no_star_catch*:** auto-incremented PK `nscatch_id` + `UNIQUE (user_id`, `nsf_id`), FK to `user` and `no_star_fish`.
 
 - `nsf_id, user_id` INT NOT NULL, FK
 - **No data column:** the presence of the row = caught
 - Idempotent insert (`INSERT IGNORE` / `ON DUPLICATE KEY`), no max-upsert
+
+The user_id foreign keys of the three progression tables carry `ON DELETE CASCADE` in the migrations: the Delete account operation must not be blocked by the constraints.
 
 ### c) Notes on the model
 
@@ -130,7 +135,7 @@ The two progression axes (`catch` and `roe`) are deliberately independent. The a
 - Catching (`catch`) and breeding (`roe`) are two independent progression axes. In addition, the binary checklist of starless fish (`no_star_catch`) is a parallel
 structure deliberately kept separate: the different mechanic (no stars) would have forced a cascade of nulls and conditional rules into `catch`.
 
-## 3. Java / JPA decisions
+## 3. Java/JPA decisions
 
 - **Each world is spelled in its native language:** Java PK is `id`, SQL column is `zone_id`; the link is made at every change of layer: `@Column(name = "zone_id")`
 on each `id`, `@JoinColumn(name = "dlc_id")` on each relationship (since JPA's defaults assume bare `id` keys, the names are explicitly given). The other JPA Entity
@@ -176,9 +181,7 @@ Flyway can migrate at startup; credentials via `spring.datasource.username=${DB_
 
 ## 7. REST API - sketch V1
 
-![Main Page Display](diagrams/Sketch_MainPage.png)
-![Stars Form](diagrams/Sketch_FormPageStars.png)
-![Roe Form](diagrams/Sketch_FormPageRoe.png)
+*Sketches of the API can be found [here](diagrams/README.md).*
 
 | Need                                                                      | Possible endpoint                                                         |
 |---------------------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -253,7 +256,16 @@ each zone (3 as of today) will hurt accessibility without providing any real ben
 - POST endpoints: A single write endpoint per axis. Adding a PUT endpoint would mean the player has to choose between adding and modifying a progression, which means more buttons. The app is meant to be minimalist, and in the middle of a hundred fish, the fewer possible interactions, the better. The thinking belongs to the application, not the player: the server figures out whether a submission creates or updates a record. Besides, any submission identical to an already existing entry is not rewritten, and the API returns "Entry already existing, no change applied".
 - DELETE endpoints: the only way to completely remove a line from the database. Therefore, they live in an area of the app displayed as "Danger Zone" (so the user does not use it lightly) and are used only when a progression has been recorded by mistake.
 
-### f) Others
+### f) Login and account pages
+
+The pre-login page offers the sign-up and login forms; the rest of the app is only reachable once authenticated (cf. Security). The logout (power) icon lives on the post-login
+pages, not on this one: nobody is connected yet.
+
+The account page is a route, not a data tab. Besides the usual account operations (change password), it introduces two destructive ones, each guarded by an
+irreversibility confirmation dialogue: Reset progression (every progression row of the user is deleted from the three progression tables;
+the reference data is untouched) and Delete account (the account row itself is deleted as well).
+
+### g) Others
 
 - Use of **Spring Data JPA Specifications** (`JpaSpecificationExecutor`) rather than derived Repository methods multiplying;
 no SQL views in v1 (frozen, parameterless — unsuited to dynamic filters, logic invisible in the repo).
